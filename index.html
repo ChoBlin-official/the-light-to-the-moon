@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Light To The Moon - Official Site</title>
+    <style>
+        body {
+            background-color: #050505; /* Черный как бездна */
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+            margin-top: 100px;
+        }
+        .moon {
+            width: 150px;
+            height: 150px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto;
+            box-shadow: 0 0 50px 20px rgba(255, 255, 255, 0.2); /* Свечение! */
+        }
+        h1 { letter-spacing: 5px; }
+        .btn {
+            border: 2px solid white;
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .btn:hover { background: white; color: black; }
+    </style>
+</head>
+<body>
+    <div class="moon"></div>
+    <h1>THE LIGHT TO THE MOON</h1>
+    <p>Coming soon (maybe before Silksong DLC)...</p>
+    <a href="#" class="btn">DOWNLOAD DEMO</a>
+</body>
+</html>
+    <meta charset="UTF-8">
+    <title>THE LIGHT TO THE MOON | Official</title>
+    <style>
+        /* ТУТ НАЧИНАЕТСЯ МАГИЯ ВИЗУАЛА */
+        body {
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+            color: #fff;
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden; /* Чтоб ничего не дергалось */
+        }
+
+        /* Твоя легендарная луна */
+        .moon {
+            width: 200px;
+            height: 200px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 80px 30px rgba(255, 255, 255, 0.15);
+            margin-bottom: 50px;
+            animation: pulse 4s infinite ease-in-out;
+        }
+
+        /* Название игры */
+        h1 {
+            font-size: 3rem;
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+            margin: 0;
+        }
+
+        /* Подзаголовок */
+        p {
+            font-size: 1rem;
+            color: #888;
+            letter-spacing: 3px;
+            margin-bottom: 40px;
+        }
+
+        /* Кнопка "Скачать" (как в меню) */
+        .btn {
+            padding: 15px 40px;
+            border: 1px solid #444;
+            background: transparent;
+            color: #fff;
+            text-decoration: none;
+            transition: 0.4s;
+            cursor: pointer;
+            letter-spacing: 2px;
+        }
+
+        .btn:hover {
+            border-color: #fff;
+            background: #fff;
+            color: #000;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+        }
+
+        /* Анимация пульсации луны */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 80px 30px rgba(255, 255, 255, 0.15); }
+            50% { transform: scale(1.05); box-shadow: 0 0 100px 40px rgba(255, 255, 255, 0.25); }
+        }
+
+        /* Эффект тумана на фоне */
+        .fog {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png'); /* Типа шум */
+            opacity: 0.1;
+            pointer-events: none;
+        }
+    </style>
+</body>
+</html>
+    <script>
+    window.addEventListener('keydown', function(event) {
+        
+        // Проверяем F4 или F12
+        if (event.key === "F4" || event.key === "F12") {
+            // Предотвращаем стандартное действие (чтоб консоль не открылась)
+            event.preventDefault(); 
+            
+            // ПЕРЕХОД НА СЕКРЕТНУЮ СТРАНИЦУ
+            window.location.href = "secret.html";
+        }
+    });
+
+    // На всякий случай заблочим правую кнопку мыши, 
+    // чтоб через "Исследовать элемент" не залезли
+    window.addEventListener('contextmenu', function (e) { 
+        e.preventDefault(); 
+    }, false);
+</script>
+</body>
+</html>
