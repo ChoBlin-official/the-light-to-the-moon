@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE LIGHT TO THE MOON | Official Site</title>
+    <!-- Подключаем стильный шрифт -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- СБРОС СТИЛЕЙ И БАЗА --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+            user-select: none;
+        }
+
+        :root {
+            --bg-color: #050508;
+            --accent-color: #00f2fe;
+            --accent-glow: rgba(0, 242, 254, 0.5);
+            --text-main: #f5f5f7;
+            --text-muted: #86868b;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            overflow-y: scroll;
+        }
+
+        /* Кастомный скроллбар */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1a1a24;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-color);
+        }
+
+        /* Интерактивный фон (Звезды) */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Глобальный фоновый свет от луны */
+        .moon-glow {
+            position: fixed;
+            top: -10%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.15) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+            filter: blur(80px);
+        }
+
+        /* --- ШАПКА (NAV) --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 25px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #fff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .age-badge {
+            border: 1px solid var(--text-muted);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);}
+
+        /* --- ГЛАВНЫЙ ЭКРАН (HERO) --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .title-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            font-weight: 900;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            line-height: 1;
+            background: linear-gradient(180deg, #fff 40%, rgba(255,255,255,0.3) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            color: var(--text-muted);
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        /* Пиздатая кнопка */
+        .btn-glow {
+            position: relative;
+            padding: 20px 40px;
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 50px;
+            overflow: hidden;
+            transition: 0.5s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-glow:hover::before {
+            left: 100%;
+        }
+
+        .btn-glow:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 30px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
+        /* --- БЛОК ОПИСАНИЯ (INFO) --- */
+        .info-section {
+            padding: 150px 10%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            position: relative;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            transition: 0.4s ease;
+        }
+.card:hover {
+    cursor: crosshair;
+    border-color: #ff00ff !important;
+    box-shadow: 5px 0px 0 #ff00ff, -5px 0px 0 #00ffff !important;
+}
+        .card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            line-height: 1.8;
+            font-size: 0.95rem;
+            font-weight: 300;
+        }
+
+        /* --- БЛОК СТАТУСА РАЗРАБОТКИ --- */
+        .status-section {
+            padding: 100px 10%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .status-container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .progress-fill {
+            width: 0%; /* Прогресс разработки */
+            height: 100%;
+            background: linear-gradient(90deg, #00f2fe, #4facfe);
+            box-shadow: 0 0 15px var(--accent-color);
+            border-radius: 10px;
+            position: relative;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
+        }
+
+        .console-logs {
+            text-align: left;
+            font-family: monospace;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 2;
+            border-left: 2px solid var(--accent-color);
+            padding-left: 20px;
+        }
+
+        .console-logs span {
+            color: var(--accent-color);
+        }
+
+        /* --- ПОДВАЛ (FOOTER) --- */
+        footer {
+            padding: 60px 5%;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5, 5, 8, 0.8);
+            backdrop-filter: blur(10px);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .footer-logo {
+            font-weight: 700;
+            color: #fff;
+        }
+
+        /* Адаптивность для мобилок */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .info-section { padding: 80px 5%; }
+            footer { flex-direction: column; gap: 20px; text-align: center; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Канвас для живых звезд -->
+    <canvas id="bg-canvas"></canvas>
+    
+    <!-- Фоновое лунное свечение -->
+    <div class="moon-glow"></div>
+
+    <!-- Навигация -->
+    <header>
+        <div class="logo">НАВИГАЦИЯ</div>
+        <nav class="nav-links">
+            <a href="#about">Инфо</a>
+            <a href="#status">Статус</a>
+            <a href="#community">Сообщество</a>
+        </nav>
+        <div class="age-badge">16+</div>
+    </header>
+
+    <!-- Главный экран -->
+    <section class="hero">
+        <div class="title-container">
+            <h1>The Light to the Moon</h1>
+        </div>
+        <p>Метроидвания • Платформер</p>
+        <button class="btn-glow" onclick="alert('Проект находится в активной разработке. Бесплатная демо-версия готовится к релизу!')">Скачать бесплатно</button>
+    </section>
+
+    <!-- Блок с описанием -->
+    <section class="info-section" id="about">
+        <div class="card">
+            <h3>ОШИБКА</h3>
+            <p>...</p>
+        </div>
+        <div class="card">
+            <h3>ОШИБКА</h3>
+            <p>...</p>
+        </div>
+        <div class="card">
+            <h3>ОШИБКА</h3>
+            <p>...</p>
+        </div>
+    </section>
+
+    <!-- Блок статуса разработки -->
+    <section class="status-section" id="status">
+        <div class="status-container">
+            <div class="status-header">
+                <span>Статус разработки</span>
+                <span style="color: var(--accent-color)">0% ГОТОВО</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="console-logs">
+                <div>[SYSTEM] <span style="color:#00ff88">READY:</span> Не готово</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Подвал -->
+    <footer>
+        <div class="footer-logo">THE LIGHT TO THE MOON</div>
+        <div>ИГРА В РАЗРАБОТКЕ • ВСЕ ПРАВА ЗАЩИЩЕНЫ</div>
+        <div>2026 © COLD LIGHT STUDIO</div>
+    </footer>
+
+    <!-- JS для интерактивного бэкграунда -->
+    <script>
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const stars = [];
+        const numStars = 100;
+
+        // Инициализация звезд
+        for (let i = 0; i < numStars; i++) {
+            stars.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                size: Math.random() * 1.5,
+                speedX: (Math.random() - 0.5) * 0.2,
+                speedY: (Math.random() - 0.5) * 0.2
+            });
+        }
+
+        // Слежение за мышкой
+        let mouse = { x: null, y: null };
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        // Анимация
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            stars.forEach(star => {
+                // Движение звезд
+                star.x += star.speedX;
+                star.y += star.speedY;
+
+                // Границы экрана
+                if (star.x < 0 || star.x > width) star.speedX *= -1;
+                if (star.y < 0 || star.y > height) star.speedY *= -1;
+
+                // Эффект параллакса от мышки
+                let dx = 0;
+                let dy = 0;
+                if (mouse.x && mouse.y) {
+                    dx = (mouse.x - width/2) * 0.02;
+                    dy = (mouse.y - height/2) * 0.02;
+                }
+
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.beginPath();
+                ctx.arc(star.x + dx, star.y + dy, star.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Ресайз окна
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+    </script>
+	<script>
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('mouseover', () => {
+            card.style.cssText = "transform: translateY(-10px); box-shadow: 10px 10px 0 #ff00ff, -10px -10px 0 #00ffff; border: 2px solid #fff; transition: none;";
+        });
+        card.addEventListener('mouseout', () => {
+            card.style.cssText = ""; // Возврат к дефолту
+        });
+    });
+</script>
+<script>
+    const cards = document.querySelectorAll('.card');
+
+    cards.forEach(card => {
+        let glitchInterval;
+
+        card.addEventListener('mouseenter', () => {
+            // Запускаем безумие
+            glitchInterval = setInterval(() => {
+                // Рандомные цифры для эффекта "битого" файла
+                const x = Math.random() * 20 - 10;
+                const y = Math.random() * 20 - 10;
+                const hue = Math.random() * 360;
+                
+                // Применяем хардкорные стили
+                card.style.transform = `translate(${x}px, ${y}px) skew(${x/2}deg)`;
+                card.style.filter = `hue-rotate(${hue}deg) brightness(1.5)`;
+                card.style.boxShadow = `${x}px ${y}px 20px #ff00ff`;
+            }, 60); // Скорость дерганья (чем меньше число, тем быстрее дергается)
+        });
+
+        card.addEventListener('mouseleave', () => {
+            // Возвращаем как было
+            clearInterval(glitchInterval);
+            card.style.transform = '';
+            card.style.filter = '';
+            card.style.boxShadow = '';
+        });
+    });
+</script>
+
+</body>
+</html>
